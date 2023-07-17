@@ -6,8 +6,7 @@ export const NavLinkWrapperComponent = (
     return (
         <NavLink
             {...props}
-            className={`${props.className} text-lg p-1 hover:underline underline-offset-4 `}>
-            {props.children}
-        </NavLink>
+            className={`${props.className} text-lg p-1 align-middle transition-all hover:text-slate-300 hover:translate-y-[1px]`}
+        />
     );
 };
