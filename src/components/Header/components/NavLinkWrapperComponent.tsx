@@ -1,12 +1,17 @@
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
 
 export const NavLinkWrapperComponent = (
-    props: NavLinkProps & React.RefAttributes<HTMLAnchorElement>
+    props: React.ComponentProps<typeof NavLink>
 ) => {
     return (
         <NavLink
             {...props}
-            className={`${props.className} text-lg p-1 align-middle transition-all hover:text-slate-300 hover:translate-y-[1px]`}
+            className={`${
+                props.className
+            } text-lg whitespace-pre p-1 align-middle transition-all ${
+                !isMobile ? 'hover:text-slate-300' : ' active:text-slate-300'
+            } `}
         />
     );
 };
