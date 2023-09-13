@@ -1,2 +1,1 @@
-export {PAGES} from "./CONSTANTS"
-export {NavRoutes} from "./NavRoutes"
+export { ROUTER_PATH } from "./CONSTANTS";
