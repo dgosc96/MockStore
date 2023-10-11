@@ -1,13 +1,13 @@
 export const ROUTER_PATH = {
-  HOME: "/",
-  CART: "cart",
-  PRODUCT_LIST: "browse",
-  PRODUCT_DETAILS: "product",
-  LOGIN: "login",
-  SIGNUP: "signup",
-  PROFILE: "profile",
-  CHECKOUT: "checkout",
-  NOT_FOUND: "*",
+  HOME: '/',
+  CART: 'cart',
+  PRODUCT_LIST: 'products',
+  PRODUCT_DETAILS: '/products/details',
+  LOGIN: 'login',
+  SIGNUP: 'signup',
+  PROFILE: 'profile',
+  CHECKOUT: 'checkout',
+  NOT_FOUND: '*',
 } as const;
 
 type RouterPath = typeof ROUTER_PATH;

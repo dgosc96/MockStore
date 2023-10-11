@@ -1,1 +1,1 @@
-export { ROUTER_PATH } from "./CONSTANTS";
+export { ROUTER_PATH } from './CONSTANTS';

@@ -1,7 +1,7 @@
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { type PropsWithChildren, type ReactNode, useState } from 'react';
 
-import { ROUTER_PATH } from "../../../navigation";
-import { NavLinkWrapperComponent as NavLink } from "./NavLinkWrapperComponent.tsx";
+import { ROUTER_PATH } from '../../../navigation';
+import { NavLinkWrapper as NavLink } from './NavLinkWrapper.tsx';
 
 type BurgerMenuProps = {
   className?: string;
@@ -12,7 +12,6 @@ type BurgerIconProps = {
   size?: number;
   thickness?: number;
   length?: number;
-  color?: string;
   className?: string;
 };
 
@@ -35,7 +34,7 @@ export const BurgerMenu = (props: PropsWithChildren<BurgerMenuProps>) => {
 
   return (
     <div className={`flex items-center ${props.className}`}>
-      <button className=" relative z-30" onClick={toggleSidebar}>
+      <button className=' relative z-30' onClick={toggleSidebar}>
         <BurgerIcon shouldAnimate={isActive} />
       </button>
       <BurgerSidebar shouldExpand={isActive}>
@@ -55,7 +54,7 @@ export const BurgerMenu = (props: PropsWithChildren<BurgerMenuProps>) => {
       {isActive && (
         <div
           onClick={collapseSidebar}
-          className="fixed left-0 top-0 z-10 h-screen w-screen"
+          className='fixed left-0 top-0 z-10 h-screen w-screen bg-black opacity-20'
         />
       )}
     </div>
@@ -66,7 +65,6 @@ const BurgerIcon = (props: BurgerIconProps) => {
   const { size = 36 } = props;
   const { length = 70 } = props;
   const { thickness = 8 } = props;
-  const { color = "white" } = props;
 
   const bar_rx = thickness / 2;
   const vb_size = 100;
@@ -76,12 +74,11 @@ const BurgerIcon = (props: BurgerIconProps) => {
       className={props.className}
       viewBox={`0 0 ${vb_size} ${vb_size}`}
       width={size}
-      fill={color}
     >
       <rect
         className={`origin-center transition-all duration-[500ms] ${
           props.shouldAnimate &&
-          "translate-x-[-17.5%] translate-y-[-17.5%] rotate-[135deg] scale-x-110"
+          'translate-x-[-17.5%] translate-y-[-17.5%] rotate-[135deg] scale-x-110'
         }`}
         width={length}
         height={thickness}
@@ -91,7 +88,7 @@ const BurgerIcon = (props: BurgerIconProps) => {
       />
       <rect
         className={`origin-center transition-all duration-[500ms] 
-        ${props.shouldAnimate && "scale-0 opacity-0"}`}
+        ${props.shouldAnimate && 'scale-0 opacity-0'}`}
         width={length}
         height={thickness}
         x={(vb_size - length) / 2}
@@ -101,7 +98,7 @@ const BurgerIcon = (props: BurgerIconProps) => {
       <rect
         className={`origin-center transition-all duration-[500ms] ${
           props.shouldAnimate &&
-          "translate-x-[-17.5px] translate-y-[17.5px] rotate-[225deg] scale-x-110"
+          'translate-x-[-17.5px] translate-y-[17.5px] rotate-[225deg] scale-x-110'
         }`}
         width={length}
         height={thickness}
@@ -116,11 +113,11 @@ const BurgerIcon = (props: BurgerIconProps) => {
 const BurgerSidebar = (props: BurgerSidebarProps) => {
   return (
     <aside
-      className={`absolute right-0 top-0 z-20 min-h-screen bg-slate-500 pt-16 duration-[500ms] ${
-        props.shouldExpand ? "w-2/3 md:w-1/3 " : "w-0 "
+      className={`0 absolute right-0 top-0 z-20 min-h-screen bg-neutral-100 pt-16 duration-[500ms] ${
+        props.shouldExpand ? 'w-2/3 md:w-1/3' : 'w-0 shadow-none '
       }`}
     >
-      <div className="mx-1 flex flex-col items-center gap-3 overflow-hidden">
+      <div className='mx-1 flex flex-col items-center gap-3 overflow-hidden'>
         {props.children}
       </div>
     </aside>

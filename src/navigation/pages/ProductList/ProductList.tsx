@@ -1,19 +1,36 @@
-import { useProductList } from "../../../api/products";
-import { ProductTileLink } from "./components/ProductTileLink";
+import { useQuery } from '@tanstack/react-query';
+import { type TProduct, productListQuery } from '../../../api/products';
+import { useLoaderData } from 'react-router-dom';
+import { productListLoader } from './loader';
+import { useRef, useState } from 'react';
+import { ProductTile } from './components/ProductTile';
 
-function ProductListPage() {
-  const { status, error, data: products } = useProductList();
+export const ProductList = () => {
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<ReturnType<typeof productListLoader>>
+  >;
+  const { data: products } = useQuery({ ...productListQuery(), initialData });
 
-  if (status === "loading") return <h1>Loading...</h1>;
+  const tileLoadCount = useRef<number>(0);
+  const [areTilesLoaded, setAreTilesLoaded] = useState<boolean>(false);
 
-  if (status === "error") return <h1>{error.message}</h1>;
+  const onTileLoad = () => {
+    tileLoadCount.current++;
+    console.log(tileLoadCount, products.length);
+    if (tileLoadCount.current == products.length - 1) {
+      setAreTilesLoaded(true);
+    }
+  };
 
   return (
-    <div className="mx-auto my-4 grid w-fit grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {products.map((val) => (
-        <ProductTileLink key={val.id} data={val} />
+    <div
+      className={`mx-3 my-6 flex max-w-screen-xl flex-col justify-center gap-x-6 gap-y-4 transition-opacity duration-100 ease-linear sm:mx-auto sm:flex-row sm:flex-wrap sm:gap-y-8 ${
+        !areTilesLoaded && ' invisible opacity-0'
+      }`}
+    >
+      {products.map((val: TProduct) => (
+        <ProductTile key={val.id} data={val} onLoad={onTileLoad} />
       ))}
     </div>
   );
-}
-export { ProductListPage as Component };
+};

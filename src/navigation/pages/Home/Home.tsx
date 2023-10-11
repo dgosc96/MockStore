@@ -1,6 +1,6 @@
 export const Home = () => {
   return (
-    <div className=" m-auto px-4 text-lg md:w-2/3 ">
+    <div className=' m-auto px-4 text-lg md:w-2/3 '>
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Velit mollitia
         nostrum, voluptas voluptates et id tempora debitis minima aperiam qui
