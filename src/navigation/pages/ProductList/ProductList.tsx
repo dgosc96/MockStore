@@ -23,7 +23,7 @@ export const ProductList = () => {
   };
 
   return (
-    <div
+    <main
       className={`mx-3 my-6 flex max-w-screen-xl flex-col justify-center gap-x-6 gap-y-4 transition-opacity duration-100 ease-linear sm:mx-auto sm:flex-row sm:flex-wrap sm:gap-y-8 ${
         !areTilesLoaded && ' invisible opacity-0'
       }`}
@@ -31,6 +31,6 @@ export const ProductList = () => {
       {products.map((val: TProduct) => (
         <ProductTile key={val.id} data={val} onLoad={onTileLoad} />
       ))}
-    </div>
+    </main>
   );
 };

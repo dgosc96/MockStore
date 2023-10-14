@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useProductList } from '../..//../api/products';
-import { ModalImage } from '../../../components/ModalImage';
+import { Lightbox } from '../../../components/Lightbox';
 
 export const ProductDetails = () => {
   const productId = useParams().productId;
@@ -19,13 +19,13 @@ export const ProductDetails = () => {
   }
 
   return (
-    <div className='mx-auto mt-10 flex flex-col border-red-400 sm:min-h-[40rem] sm:max-w-screen-lg sm:flex-row '>
-      <ModalImage
-        className='max-h-[20rem] cursor-pointer overflow-hidden object-contain p-9 transition-transform hover:scale-[1.03] sm:max-h-full sm:basis-1/2'
-        src={product.thumbnail}
+    <main className='mx-auto mt-10 flex flex-col sm:min-h-[40rem] sm:max-w-screen-lg sm:flex-row'>
+      <Lightbox
+        className='m-3 max-h-[20rem] cursor-pointer overflow-hidden object-contain transition-transform hover:scale-[1.02] sm:max-h-[40rem] sm:basis-3/4'
+        src={product.image}
         alt={product.title}
       />
-      <div className='m-3 flex basis-1/2 flex-col gap-3 '>
+      <div className='m-3  flex basis-1/2 flex-col gap-3  '>
         <h1 className='text-center text-4xl font-bold'>{product.title}</h1>
         <div className='flex items-center justify-between'>
           <p className='ml-1 text-3xl font-bold text-red-700'>
@@ -33,15 +33,18 @@ export const ProductDetails = () => {
             {product.price.toFixed(2)}
           </p>
           <p className='text-sm'>
-            {product.rating}
+            {product.rating.rate}
             <span>⭐</span>
+            <span className='ml-1 align-top text-xs text-gray-400'>
+              {`(${product.rating.count} reviews)`}
+            </span>
           </p>
         </div>
-        <p className='text-xs text-gray-500'>
+        <p className='text-xs text-gray-400'>
           <span className=' font-bold'>Category: </span>
           {product.category}
         </p>
-        <p className='mx-2 grow font-sans leading-relaxed tracking-wide'>
+        <p className=' grow font-sans leading-relaxed tracking-wide'>
           {product.description}
         </p>
         <div className='mb-5 flex flex-col justify-end gap-3'>
@@ -53,6 +56,6 @@ export const ProductDetails = () => {
           </button>
         </div>
       </div>
-    </div>
+    </main>
   );
 };

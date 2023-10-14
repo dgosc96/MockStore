@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from '../components/Layout';
+import RootLayout from './Layout';
 import { ROUTER_PATH } from '.';
 import type { QueryClient } from '@tanstack/react-query';
 import { productListLoader } from './pages/ProductList/loader';
@@ -8,7 +8,7 @@ export const createRouterWithTSQueryClRef = (queryClient: QueryClient) =>
   createBrowserRouter([
     {
       path: ROUTER_PATH.HOME,
-      element: <Layout />,
+      element: <RootLayout />,
       children: [
         {
           index: true,

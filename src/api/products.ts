@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 
 /* TODO: make it env */
-const API_URL = 'https://dummyjson.com';
+const API_URL = 'https://fakestoreapi.com';
 /* TODO_END */
 
 export const useProductList = () => {
@@ -16,7 +16,7 @@ export const productListQuery = () => ({
     const data = await fetchProducts();
     console.log(data);
     const products = validateProducts(data);
-    return Promise.resolve(products.products);
+    return Promise.resolve(products);
   },
   staleTime: 1000 * 60,
 });
@@ -26,28 +26,22 @@ const fetchProducts = async (): Promise<unknown> => {
 };
 
 const validateProducts = (data: unknown) => {
-  return ProductArraySchema.parse(data);
+  return ProductArraySchema.parse(Array.isArray(data) ? data : [data]);
 };
 
 const ProductSchema = z.object({
   id: z.number(),
   title: z.string(),
-  description: z.string(),
   price: z.number(),
-  discountPercentage: z.number(),
-  rating: z.number(),
-  stock: z.number(),
-  brand: z.string(),
+  description: z.string(),
   category: z.string(),
-  thumbnail: z.string(),
-  images: z.array(z.string()),
+  image: z.string(),
+  rating: z.object({
+    rate: z.number(),
+    count: z.number(),
+  }),
 });
 
-const ProductArraySchema = z.object({
-  products: z.array(ProductSchema),
-  skip: z.number(),
-  total: z.number(),
-  limit: z.number(),
-});
+const ProductArraySchema = ProductSchema.array();
 
 export type TProduct = z.infer<typeof ProductSchema>;
