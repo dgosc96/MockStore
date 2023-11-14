@@ -1,15 +1,20 @@
 import { Header, Footer } from '../components';
-import { Outlet, ScrollRestoration } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useNavigation } from 'react-router-dom';
+import { LoadingIndicator } from '../components/LoadingIndicator';
+import { DivFadeIn } from '../components/DivFadeIn';
 
 export default function RootLayout() {
+  const navigation = useNavigation();
+
   return (
-    <div className=' flex min-h-screen flex-col font-sans text-neutral-800'>
+    <DivFadeIn className=' flex min-h-screen flex-col bg-white font-sans text-neutral-800'>
       <Header />
-      <div className='grow'>
+      <main className='grow'>
+        {navigation.state === 'loading' && <LoadingIndicator />}
         <Outlet />
-      </div>
+      </main>
       <Footer />
       <ScrollRestoration />
-    </div>
+    </DivFadeIn>
   );
 }

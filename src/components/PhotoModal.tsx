@@ -6,35 +6,30 @@ import {
 
 import QuickPinchZoom, { make2dTransformValue } from 'react-quick-pinch-zoom';
 
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 
 import { CgClose as CloseIcon } from 'react-icons/cg';
 
-type LightboxProps = {
+import { useBoolStateURL } from '../utils/hooks/useStateURL';
+import { DivFadeIn } from './DivFadeIn';
+
+type PhotoModalProps = {
   className?: string;
   src: string;
   alt?: string;
 };
 
-export const Lightbox = (props: LightboxProps) => {
-  const lightboxRef = useRef<HTMLDivElement>(null);
+export const PhotoModal = (props: PhotoModalProps) => {
   const imgContainerRef = useRef<HTMLDivElement>(null);
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isZoomed, setIsZoomed] = useState<boolean>(false);
+  const [isOpenParam, setIsOpenParam] = useBoolStateURL('modal');
 
   const onUpdate = useCallback(
     ({ x, y, scale }: { x: number; y: number; scale: number }) => {
       const { current: img } = imgContainerRef;
-      if (scale <= 1) {
-        setIsZoomed(false);
-      } else {
-        setIsZoomed(true);
-      }
 
       if (img) {
         const value = make2dTransformValue({ x, y, scale });
-
         img.style.setProperty('transform', value);
       }
     },
@@ -42,24 +37,24 @@ export const Lightbox = (props: LightboxProps) => {
   );
 
   useEffect(() => {
-    if (lightboxRef.current) {
-      if (isOpen) {
-        disableBodyScroll(lightboxRef.current);
+    if (imgContainerRef.current) {
+      if (isOpenParam) {
+        disableBodyScroll(imgContainerRef.current);
       } else {
-        enableBodyScroll(lightboxRef.current);
+        enableBodyScroll(imgContainerRef.current);
       }
     }
     return () => clearAllBodyScrollLocks();
-  }, [isOpen]);
+  }, [isOpenParam]);
 
   return (
     <>
-      <img {...props} onClick={() => setIsOpen(true)} />
-      {isOpen && (
-        <div ref={lightboxRef} className='fixed inset-0 z-50 grid '>
+      <img {...props} onClick={() => setIsOpenParam(true)} />
+      {isOpenParam && (
+        <DivFadeIn className='fixed inset-0 z-50 grid '>
           <div
             className='absolute inset-0 bg-black bg-opacity-50'
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsOpenParam(false)}
           ></div>
           <QuickPinchZoom
             onUpdate={onUpdate}
@@ -74,22 +69,18 @@ export const Lightbox = (props: LightboxProps) => {
           >
             <div
               ref={imgContainerRef}
-              className={`w-fit rounded-md bg-white p-4 ${
-                isZoomed
-                  ? 'cursor-grab active:cursor-grabbing'
-                  : 'cursor-pointer '
-              }`}
+              className={`w-fit cursor-grab bg-white p-4 active:cursor-grabbing `}
             >
-              <img src={props.src} alt={props.alt} />
+              <img src={props.src} alt={props.alt} width={500} height={500} />
             </div>
           </QuickPinchZoom>
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsOpenParam(false)}
             className='absolute right-5 top-5 rounded-lg bg-black bg-opacity-30 text-white'
           >
             <CloseIcon size={34} />
           </button>
-        </div>
+        </DivFadeIn>
       )}
     </>
   );

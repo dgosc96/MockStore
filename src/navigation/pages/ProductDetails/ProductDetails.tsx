@@ -1,31 +1,32 @@
-import { useParams } from 'react-router-dom';
-import { useProductList } from '../..//../api/products';
-import { Lightbox } from '../../../components/Lightbox';
+import { useLoaderData } from 'react-router-dom';
+import { productQuerySingle } from '../..//../api/products';
+import { PhotoModal } from '../../../components/PhotoModal';
+import { useQuery } from '@tanstack/react-query';
+import { productDetailsLoader } from './loader';
+import { DivFadeIn } from '../../../components/DivFadeIn';
+
+import { useShoppingCart } from '../../../context/ShopingCartContext';
+import { toastCartItemAdd } from '../../../notifications/toasts';
 
 export const ProductDetails = () => {
-  const productId = useParams().productId;
-  const { status, data: products } = useProductList();
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<typeof productDetailsLoader>
+  >;
+  const { data: product } = useQuery({
+    ...productQuerySingle(initialData.id),
+    initialData,
+  });
 
-  if (status === 'loading') {
-    return <h1>Loading...</h1>;
-  }
-  if (status === 'error' || productId === undefined) {
-    return <h1>Upps, something went wrong </h1>;
-  }
-
-  const product = products[parseInt(productId) - 1];
-  if (!product) {
-    return;
-  }
+  const { increaseCartQuantity } = useShoppingCart();
 
   return (
-    <main className='mx-auto mt-10 flex flex-col sm:min-h-[40rem] sm:max-w-screen-lg sm:flex-row'>
-      <Lightbox
+    <DivFadeIn className='mx-auto mt-10 flex flex-col sm:min-h-[40rem] sm:max-w-screen-lg sm:flex-row'>
+      <PhotoModal
         className='m-3 max-h-[20rem] cursor-pointer overflow-hidden object-contain transition-transform hover:scale-[1.02] sm:max-h-[40rem] sm:basis-3/4'
         src={product.image}
         alt={product.title}
       />
-      <div className='m-3  flex basis-1/2 flex-col gap-3  '>
+      <div className='m-3 flex basis-1/2 flex-col gap-3  '>
         <h1 className='text-center text-4xl font-bold'>{product.title}</h1>
         <div className='flex items-center justify-between'>
           <p className='ml-1 text-3xl font-bold text-red-700'>
@@ -33,7 +34,7 @@ export const ProductDetails = () => {
             {product.price.toFixed(2)}
           </p>
           <p className='text-sm'>
-            {product.rating.rate}
+            {product.rating.rate.toFixed(1)}
             <span>⭐</span>
             <span className='ml-1 align-top text-xs text-gray-400'>
               {`(${product.rating.count} reviews)`}
@@ -48,7 +49,12 @@ export const ProductDetails = () => {
           {product.description}
         </p>
         <div className='mb-5 flex flex-col justify-end gap-3'>
-          <button className=' rounded-full bg-red-500 p-4 font-semibold text-white transition-transform hover:scale-[1.01] '>
+          <button
+            onClick={() =>
+              increaseCartQuantity(product.id) && toastCartItemAdd()
+            }
+            className=' rounded-full bg-red-500 p-4 font-semibold text-white transition-transform hover:scale-[1.01] '
+          >
             ADD TO CART
           </button>
           <button className='rounded-full bg-gray-300 p-4 font-semibold transition-transform hover:scale-[1.01]'>
@@ -56,6 +62,6 @@ export const ProductDetails = () => {
           </button>
         </div>
       </div>
-    </main>
+    </DivFadeIn>
   );
 };

@@ -3,6 +3,7 @@ import RootLayout from './Layout';
 import { ROUTER_PATH } from '.';
 import type { QueryClient } from '@tanstack/react-query';
 import { productListLoader } from './pages/ProductList/loader';
+import { productDetailsLoader } from './pages/ProductDetails/loader';
 
 export const createRouterWithTSQueryClRef = (queryClient: QueryClient) =>
   createBrowserRouter([
@@ -37,9 +38,12 @@ export const createRouterWithTSQueryClRef = (queryClient: QueryClient) =>
         {
           path: `${ROUTER_PATH.PRODUCT_DETAILS}/:productId`,
           async lazy() {
-            let { ProductDetails } = await import('./pages');
+            let { ProductDetails } = await import(
+              './pages/ProductDetails/ProductDetails'
+            );
             return { Component: ProductDetails };
           },
+          loader: ({ params }) => productDetailsLoader(queryClient, params),
         },
         {
           path: ROUTER_PATH.LOGIN,

@@ -2,6 +2,7 @@ import { type PropsWithChildren, type ReactNode, useState } from 'react';
 
 import { ROUTER_PATH } from '../../../navigation';
 import { NavLinkWrapper as NavLink } from './NavLinkWrapper.tsx';
+import { DivFadeIn } from '../../DivFadeIn.tsx';
 
 type BurgerMenuProps = {
   className?: string;
@@ -52,9 +53,9 @@ export const BurgerMenu = (props: PropsWithChildren<BurgerMenuProps>) => {
         </NavLink>
       </BurgerSidebar>
       {isActive && (
-        <div
+        <DivFadeIn
           onClick={collapseSidebar}
-          className='fixed left-0 top-0 z-10 h-screen w-screen bg-black opacity-20'
+          className='fixed inset-0 left-0 top-0 z-10 bg-black bg-opacity-20 duration-500 '
         />
       )}
     </div>
