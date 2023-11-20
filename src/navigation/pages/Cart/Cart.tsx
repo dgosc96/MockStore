@@ -12,6 +12,7 @@ import IntervalRunnerButton from '../../../components/IntervalRunnerButton';
 import PriceSpan from '../../../components/PriceSpan';
 import { Link, useNavigate } from 'react-router-dom';
 import { toastCartItemRemove } from '../../../notifications/toasts';
+import { useState } from 'react';
 
 export const Cart = () => {
   const { cartItems, cartQuantity } = useShoppingCart();
@@ -107,38 +108,45 @@ type QuantityModifierProps = {
   id: number;
 };
 const QuantityModifier = ({ id }: QuantityModifierProps) => {
-  const {
-    getItemQuantity,
-    setItemQuantity,
-    increaseCartQuantity,
-    decreaseCartQuantity,
-  } = useShoppingCart();
+  const { getItemQuantity, setItemQuantity } = useShoppingCart();
+
+  const [localVal, setLocalVal] = useState<number>(getItemQuantity(id));
+
+  const decreaseLocal = () =>
+    setLocalVal((prev) => (prev > 1 ? prev - 1 : prev));
+  const increaseLocal = () =>
+    setLocalVal((prev) => (prev < 99 ? prev + 1 : prev));
+
+  const handleOnIntervalStop = () => {
+    setItemQuantity(id, localVal);
+  };
 
   return (
     <div className=' grid flex-none grid-flow-col justify-center overflow-hidden rounded-sm border border-neutral-400 transition-transform'>
       <IntervalRunnerButton
         className='border-r border-inherit bg-inherit p-0.5 transition-colors hover:bg-neutral-100 active:bg-neutral-200'
-        onPressedDown={() => decreaseCartQuantity(id)}
+        onPressedDown={() => decreaseLocal()}
+        onStop={() => handleOnIntervalStop()}
       >
         <MinusIcon />
       </IntervalRunnerButton>
       <input
         type='number'
         name='cartItemQty'
-        min={1}
         onClick={(e) => e.currentTarget.select()}
-        value={getItemQuantity(id)}
-        onChange={(e) =>
-          setItemQuantity(
-            id,
-            e.target.value === '' ? 0 : e.target.valueAsNumber,
-          )
-        }
+        min={1}
+        value={localVal}
+        onChange={(e) => {
+          const newVal = e.target.value === '' ? 0 : e.target.valueAsNumber;
+          setItemQuantity(id, newVal);
+          setLocalVal(() => Math.min(Math.max(1, newVal), 99));
+        }}
         className='w-6 bg-inherit text-center text-sm font-semibold [appearance:textfield] hover:bg-neutral-100 focus:bg-neutral-200 focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none '
       />
       <IntervalRunnerButton
         className='border-l border-inherit bg-inherit p-0.5 transition-colors hover:bg-neutral-100 active:bg-neutral-200'
-        onPressedDown={() => increaseCartQuantity(id)}
+        onPressedDown={() => increaseLocal()}
+        onStop={() => handleOnIntervalStop()}
       >
         <PlusIcon />
       </IntervalRunnerButton>
