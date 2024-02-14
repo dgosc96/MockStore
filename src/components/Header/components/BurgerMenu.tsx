@@ -1,4 +1,10 @@
-import { type PropsWithChildren, type ReactNode, useState } from 'react';
+import {
+  type PropsWithChildren,
+  type ReactNode,
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
 
 import { ROUTER_PATH } from '../../../navigation';
 import { NavLinkWrapper as NavLink } from './NavLinkWrapper.tsx';
@@ -6,19 +12,7 @@ import { DivFadeIn } from '../../DivFadeIn.tsx';
 
 type BurgerMenuProps = {
   className?: string;
-};
-
-type BurgerIconProps = {
-  shouldAnimate: boolean;
-  size?: number;
-  thickness?: number;
-  length?: number;
-  className?: string;
-};
-
-type BurgerSidebarProps = {
-  shouldExpand: boolean;
-  children?: ReactNode;
+  onStateChange?: (isActive: boolean) => void;
 };
 
 export const BurgerMenu = (props: PropsWithChildren<BurgerMenuProps>) => {
@@ -33,10 +27,24 @@ export const BurgerMenu = (props: PropsWithChildren<BurgerMenuProps>) => {
     setIsActive(false);
   };
 
+  useEffect(() => {
+    if (props.onStateChange != undefined) {
+      props.onStateChange(isActive);
+    }
+  }, [isActive]);
+
   return (
-    <div className={`flex items-center ${props.className}`}>
-      <button className=' relative z-30' onClick={toggleSidebar}>
-        <BurgerIcon shouldAnimate={isActive} />
+    <div
+      className={`flex aspect-square items-center rounded-xl hover:bg-neutral-100/60 ${props.className}`}
+    >
+      <button
+        className={`relative z-40 m-auto h-full `}
+        onClick={toggleSidebar}
+      >
+        <BurgerIcon
+          shouldAnimate={isActive}
+          className='overflow-visible fill-inherit'
+        />
       </button>
       <BurgerSidebar shouldExpand={isActive}>
         <NavLink onClick={collapseSidebar} to={ROUTER_PATH.HOME}>
@@ -55,11 +63,19 @@ export const BurgerMenu = (props: PropsWithChildren<BurgerMenuProps>) => {
       {isActive && (
         <DivFadeIn
           onClick={collapseSidebar}
-          className='fixed inset-0 left-0 top-0 z-10 bg-black bg-opacity-20 duration-500 '
+          className='fixed inset-0 z-20 h-screen  bg-black/20 duration-500 '
         />
       )}
     </div>
   );
+};
+
+type BurgerIconProps = {
+  shouldAnimate: boolean;
+  size?: number;
+  thickness?: number;
+  length?: number;
+  className?: string;
 };
 
 const BurgerIcon = (props: BurgerIconProps) => {
@@ -111,10 +127,18 @@ const BurgerIcon = (props: BurgerIconProps) => {
   );
 };
 
+type BurgerSidebarProps = {
+  shouldExpand: boolean;
+  children?: ReactNode;
+};
+
 const BurgerSidebar = (props: BurgerSidebarProps) => {
+  const sidebarRef = useRef<HTMLElement>(null);
+
   return (
     <aside
-      className={`0 absolute right-0 top-0 z-20 min-h-screen bg-neutral-100 pt-16 duration-[500ms] ${
+      ref={sidebarRef}
+      className={`fixed right-0 top-0 z-30 min-h-screen bg-neutral-100 pt-16 duration-[500ms] ${
         props.shouldExpand ? 'w-2/3 md:w-1/3' : 'w-0 shadow-none '
       }`}
     >
