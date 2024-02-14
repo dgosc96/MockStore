@@ -1,13 +1,14 @@
-import { PulseLoader } from 'react-spinners';
+import { Oval as Spinner } from 'react-loader-spinner';
 import { DivFadeIn } from './DivFadeIn';
 
 export const LoadingIndicator = () => {
   return (
-    <DivFadeIn className='fixed inset-0 z-10 delay-150 '>
-      <PulseLoader
-        className='absolute top-1/3 w-full text-center '
-        color='#dc2626'
-        margin={10}
+    <DivFadeIn className='fixed inset-0 z-20 flex items-center justify-center bg-white/30 delay-150'>
+      <Spinner
+        strokeWidth={5}
+        color='#525252'
+        secondaryColor='#a3a3a3'
+        /*  margin={22} */
       />
     </DivFadeIn>
   );

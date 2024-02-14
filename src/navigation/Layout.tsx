@@ -7,10 +7,10 @@ export default function RootLayout() {
   const navigation = useNavigation();
 
   return (
-    <DivFadeIn className=' flex min-h-screen flex-col bg-white font-sans text-neutral-800'>
+    <DivFadeIn className=' flex min-h-screen flex-col fill-neutral-800 font-sans text-neutral-800'>
+      {navigation.state === 'loading' && <LoadingIndicator />}
       <Header />
       <main className='grow'>
-        {navigation.state === 'loading' && <LoadingIndicator />}
         <Outlet />
       </main>
       <Footer />
