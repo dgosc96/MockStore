@@ -19,7 +19,15 @@ export default {
       transitionProperty: {
         rounded: 'border-radius',
       },
+      backgroundImage: {
+        'hero-image': `url(/img/hero-image.jpg)`,
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }) {
+      addVariant('child', '& > *');
+      addVariant('child-hover', '& > *:hover');
+    },
+  ],
 };
