@@ -7,7 +7,7 @@ import {
 } from 'react';
 
 import { ROUTER_PATH } from '../../../navigation';
-import { NavLinkWrapper as NavLink } from './NavLinkWrapper.tsx';
+import { NavLink } from 'react-router-dom';
 import { DivFadeIn } from '../../DivFadeIn.tsx';
 
 type BurgerMenuProps = {
