@@ -6,11 +6,10 @@ import {
 
 import QuickPinchZoom, { make2dTransformValue } from 'react-quick-pinch-zoom';
 
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 
 import { CgClose as CloseIcon } from 'react-icons/cg';
 
-import { useBoolStateURL } from '../utils/hooks/useStateURL';
 import { DivFadeIn } from './DivFadeIn';
 
 type PhotoModalProps = {
@@ -22,7 +21,7 @@ type PhotoModalProps = {
 export const PhotoModal = (props: PhotoModalProps) => {
   const imgContainerRef = useRef<HTMLDivElement>(null);
 
-  const [isOpenParam, setIsOpenParam] = useBoolStateURL('modal');
+  const [isOpenParam, setIsOpenParam] = useState<boolean>(false);
 
   const onUpdate = useCallback(
     ({ x, y, scale }: { x: number; y: number; scale: number }) => {
