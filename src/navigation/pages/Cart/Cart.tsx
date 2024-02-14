@@ -1,4 +1,4 @@
-import { useProductList, type TProduct } from '../../../api/products';
+import { useProductList, type TProduct } from '../../../adapters/products';
 import {
   useShoppingCart,
   type CartItem,
@@ -11,7 +11,7 @@ import { DivFadeIn } from '../../../components/DivFadeIn';
 import IntervalRunnerButton from '../../../components/IntervalRunnerButton';
 import PriceSpan from '../../../components/PriceSpan';
 import { Link, useNavigate } from 'react-router-dom';
-import { toastCartItemRemove } from '../../../notifications/toasts';
+import { toastCartItemRemove } from '../../../lib/notifications/toasts';
 import { useState } from 'react';
 
 export const Cart = () => {
@@ -40,12 +40,12 @@ export const Cart = () => {
     );
   }
   return (
-    <DivFadeIn className='my-5'>
-      <h1 className='text-center text-4xl font-bold'>Your cart:</h1>
+    <DivFadeIn className='my-10'>
+      <h1 className='text-center text-5xl font-bold'>Your cart:</h1>
       <p className='text-center text-sm font-semibold text-gray-400'>
         ({cartQuantity} items)
       </p>
-      <div className=' mt-8 flex flex-wrap justify-evenly gap-4'>
+      <div className=' mt-14 flex flex-wrap justify-evenly gap-4'>
         <DivFadeIn className=' sm:space-y-5 '>{mapCartItems()}</DivFadeIn>
         <CartSummary subtotal={subtotal} />
       </div>
@@ -89,7 +89,7 @@ const CartItemComponent = ({ item }: CartItemComponentProps) => {
       <QuantityModifier id={item.id} />
       <PriceSpan
         price={priceSum}
-        className='w-24 text-center text-lg font-semibold sm:text-right'
+        className='w-20 text-center text-lg font-semibold sm:text-right'
       />
       <button
         className='m-2 aspect-square rounded-md bg-white object-right brightness-95 transition-colors delay-75 duration-200 hover:bg-red-500 hover:text-neutral-100'
@@ -122,9 +122,9 @@ const QuantityModifier = ({ id }: QuantityModifierProps) => {
   };
 
   return (
-    <div className=' grid flex-none grid-flow-col justify-center overflow-hidden rounded-sm border border-neutral-400 transition-transform'>
+    <div className='mx-2 grid flex-none grid-flow-col justify-center overflow-hidden rounded-md border border-neutral-400 transition-transform'>
       <IntervalRunnerButton
-        className='border-r border-inherit bg-inherit p-0.5 transition-colors hover:bg-neutral-100 active:bg-neutral-200'
+        className='border-r border-inherit bg-inherit p-1 transition-colors hover:bg-neutral-100 active:bg-neutral-200'
         onPressedDown={() => decreaseLocal()}
         onStop={() => handleOnIntervalStop()}
       >
@@ -136,15 +136,18 @@ const QuantityModifier = ({ id }: QuantityModifierProps) => {
         onClick={(e) => e.currentTarget.select()}
         min={1}
         value={localVal}
+        onWheel={(e) => {
+          e.currentTarget.blur();
+        }}
         onChange={(e) => {
           const newVal = e.target.value === '' ? 0 : e.target.valueAsNumber;
           setItemQuantity(id, newVal);
           setLocalVal(() => Math.min(Math.max(1, newVal), 99));
         }}
-        className='w-6 bg-inherit text-center text-sm font-semibold [appearance:textfield] hover:bg-neutral-100 focus:bg-neutral-200 focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none '
+        className='w-7 bg-inherit text-center font-semibold [appearance:textfield] hover:bg-neutral-100 focus:bg-neutral-200 focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none '
       />
       <IntervalRunnerButton
-        className='border-l border-inherit bg-inherit p-0.5 transition-colors hover:bg-neutral-100 active:bg-neutral-200'
+        className='border-l border-inherit bg-inherit p-1 transition-colors hover:bg-neutral-100 active:bg-neutral-200'
         onPressedDown={() => increaseLocal()}
         onStop={() => handleOnIntervalStop()}
       >
@@ -160,7 +163,7 @@ type CartSummaryProps = {
 
 const CartSummary = ({ subtotal }: CartSummaryProps) => {
   return (
-    <div className='sticky top-44 flex h-fit w-full flex-col items-stretch gap-3 border px-5 py-2 md:w-[25rem]'>
+    <div className='sticky top-36 flex h-fit w-full flex-col items-stretch gap-3 border px-5 py-2 md:w-[25rem]'>
       <h2 className='text-xl font-bold'>Order Summary: </h2>
       <div className=' inline-flex justify-between'>
         <span>Subtotal:</span>
@@ -180,9 +183,9 @@ const CartSummary = ({ subtotal }: CartSummaryProps) => {
       </div>
       <Link
         to={`/${ROUTER_PATH.CHECKOUT}`}
-        className='h-10 rounded-full border bg-neutral-800 text-center text-xl text-neutral-50'
+        className='rounded-full bg-neutral-800 py-1 text-center text-xl text-neutral-50'
       >
-        <span className='align-middle'>Place Order</span>
+        <span className=''>Place Order</span>
       </Link>
     </div>
   );

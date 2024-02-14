@@ -1,10 +1,10 @@
-import { type TProduct } from '../../../../api/products';
+import { type TProduct } from '../../../../adapters/products';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTER_PATH } from '../../../';
 import { useShoppingCart } from '../../../../context/ShopingCartContext';
 import { HiOutlineHeart } from 'react-icons/hi';
 import { LiaCartPlusSolid } from 'react-icons/lia';
-import { toastCartItemAdd } from '../../../../notifications/toasts';
+import { toastCartItemAdd } from '../../../../lib/notifications/toasts';
 
 export const ProductTile = (props: { data: TProduct }) => {
   const detailsLinkPath = `${ROUTER_PATH.PRODUCT_DETAILS}/${props.data.id}`;
@@ -57,11 +57,11 @@ const AddToCartButton = (props: AddButtonProps) => {
   return (
     <button
       onClick={handleOnClick}
-      className={`group/add-cart-b inline-flex max-h-fit w-[3rem] items-center justify-end gap-2 overflow-hidden rounded-3xl bg-red-600 bg-opacity-90 p-2 text-neutral-50 shadow-lg transition-all delay-100 hover:z-10 hover:w-[9.4rem] active:bg-red-700 active:bg-opacity-90 active:delay-0 active:duration-100 ${props.className} `}
+      className={`group/add-cart-btn inline-flex max-h-fit w-[3rem] items-center justify-end gap-2 overflow-hidden rounded-3xl bg-red-600 bg-opacity-90 p-2 text-neutral-50 shadow-lg transition-all delay-100 hover:z-10 hover:w-[9.4rem] active:bg-red-700 active:bg-opacity-90 active:delay-0 active:duration-100 ${props.className} `}
     >
       <span className='flex-none text-lg font-semibold '>Add to cart </span>
       <LiaCartPlusSolid
-        className=' flex-none scale-125 transition-transform delay-75 duration-300 group-hover/add-cart-b:scale-[1.4] group-active/add-cart-b:scale-125 group-active/add-cart-b:delay-0  group-active/add-cart-b:duration-0 '
+        className=' flex-none scale-125 transition-transform delay-75 duration-300 group-hover/add-cart-btn:scale-[1.4] group-active/add-cart-btn:scale-125 group-active/add-cart-btn:delay-0  group-active/add-cart-btn:duration-0 '
         size='2rem'
       />
     </button>
