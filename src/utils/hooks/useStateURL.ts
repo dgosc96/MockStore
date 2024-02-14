@@ -17,6 +17,5 @@ export const useBoolStateURL = (
   if (initVal) {
     setIsKey(initVal);
   }
-
   return [isKey, setIsKey];
 };

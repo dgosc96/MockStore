@@ -1,12 +1,12 @@
 import { useLoaderData } from 'react-router-dom';
-import { productQuerySingle } from '../..//../api/products';
+import { productQuerySingle } from '../../../adapters/products';
 import { PhotoModal } from '../../../components/PhotoModal';
 import { useQuery } from '@tanstack/react-query';
 import { productDetailsLoader } from './loader';
 import { DivFadeIn } from '../../../components/DivFadeIn';
 
 import { useShoppingCart } from '../../../context/ShopingCartContext';
-import { toastCartItemAdd } from '../../../notifications/toasts';
+import { toastCartItemAdd } from '../../../lib/notifications/toasts';
 
 export const ProductDetails = () => {
   const initialData = useLoaderData() as Awaited<

@@ -1,12 +1,12 @@
 export const ROUTER_PATH = {
   HOME: '/',
-  CART: 'cart',
-  PRODUCT_LIST: 'products',
-  PRODUCT_DETAILS: '/products/details',
-  LOGIN: 'login',
-  SIGNUP: 'signup',
-  PROFILE: 'profile',
-  CHECKOUT: 'checkout',
+  CART: '/cart',
+  PRODUCT_LIST: '/products',
+  PRODUCT_DETAILS: '/product',
+  LOGIN: '/login',
+  SIGNUP: '/signup',
+  PROFILE: '/profile',
+  CHECKOUT: '/checkout',
   NOT_FOUND: '*',
 } as const;
 

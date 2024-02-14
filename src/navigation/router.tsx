@@ -14,31 +14,31 @@ export const createRouterWithTSQueryClRef = (queryClient: QueryClient) =>
         {
           index: true,
           async lazy() {
-            let { Home } = await import('./pages');
+            const { Home } = await import('./pages');
             return { Component: Home };
           },
         },
         {
           path: ROUTER_PATH.CART,
           async lazy() {
-            let { Cart } = await import('./pages');
+            const { Cart } = await import('./pages');
             return { Component: Cart };
           },
         },
         {
-          path: ROUTER_PATH.PRODUCT_LIST,
+          path: `${ROUTER_PATH.PRODUCT_LIST}`,
           async lazy() {
-            let { ProductList } = await import(
+            const { ProductList } = await import(
               './pages/ProductList/ProductList'
             );
             return { Component: ProductList };
           },
-          loader: productListLoader(queryClient),
+          loader: () => productListLoader(queryClient),
         },
         {
           path: `${ROUTER_PATH.PRODUCT_DETAILS}/:productId`,
           async lazy() {
-            let { ProductDetails } = await import(
+            const { ProductDetails } = await import(
               './pages/ProductDetails/ProductDetails'
             );
             return { Component: ProductDetails };
@@ -48,35 +48,35 @@ export const createRouterWithTSQueryClRef = (queryClient: QueryClient) =>
         {
           path: ROUTER_PATH.LOGIN,
           async lazy() {
-            let { Login } = await import('./pages');
+            const { Login } = await import('./pages');
             return { Component: Login };
           },
         },
         {
           path: ROUTER_PATH.SIGNUP,
           async lazy() {
-            let { Signup } = await import('./pages');
+            const { Signup } = await import('./pages');
             return { Component: Signup };
           },
         },
         {
           path: ROUTER_PATH.PROFILE,
           async lazy() {
-            let { Profile } = await import('./pages');
+            const { Profile } = await import('./pages');
             return { Component: Profile };
           },
         },
         {
           path: ROUTER_PATH.CHECKOUT,
           async lazy() {
-            let { Checkout } = await import('./pages');
+            const { Checkout } = await import('./pages');
             return { Component: Checkout };
           },
         },
         {
           path: ROUTER_PATH.NOT_FOUND,
           async lazy() {
-            let { PageNotFound } = await import('./pages');
+            const { PageNotFound } = await import('./pages');
             return { Component: PageNotFound };
           },
         },
