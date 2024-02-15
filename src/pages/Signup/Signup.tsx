@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   createUserWithEmailAndPassword,
   validatePassword,
-} from '../../../lib/firebase/firebase';
+} from '../..//lib/firebase/firebase';
 import { updateProfile } from 'firebase/auth';
-import { toastSingedUp } from '../../../lib/notifications/toasts';
+import { toastSingedUp } from '../../lib/notifications/toasts';
 
 export const Signup = () => {
   const [email, setEmail] = useState('');

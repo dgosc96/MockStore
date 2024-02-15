@@ -1,4 +1,4 @@
-import { DivFadeIn } from '../../../components/DivFadeIn';
+import { DivFadeIn } from '../../components/DivFadeIn';
 
 type Product = {
   id: number;

@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { type TProduct, productQueryAll } from '../../../adapters/products';
+import { type TProduct, productQueryAll } from '../../adapters/products';
 import { useLoaderData, useLocation } from 'react-router-dom';
 import { productListLoader } from './loader';
 import { ProductTile } from './components/ProductTile';
-import { DivFadeIn } from '../../../components/DivFadeIn';
-import { searchProducts, processSearchTerm } from '../../../lib/search/search';
+import { DivFadeIn } from '../../components/DivFadeIn';
+import { searchProducts, processSearchTerm } from '../../lib/search/search';
 
 export const ProductList = () => {
   const initialData = useLoaderData() as Awaited<

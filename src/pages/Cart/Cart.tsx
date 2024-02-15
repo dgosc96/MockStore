@@ -1,17 +1,17 @@
-import { useProductList, type TProduct } from '../../../adapters/products';
+import { useProductList, type TProduct } from '../../adapters/products';
 import {
   useShoppingCart,
   type CartItem,
-} from '../../../context/ShopingCartContext';
-import { ROUTER_PATH } from '../..';
+} from '../../context/ShopingCartContext';
+import { ROUTER_PATH } from '../../navigation';
 import { HiOutlineTrash } from 'react-icons/hi';
 import { FaPlus as PlusIcon, FaMinus as MinusIcon } from 'react-icons/fa6';
 
-import { DivFadeIn } from '../../../components/DivFadeIn';
-import IntervalRunnerButton from '../../../components/IntervalRunnerButton';
-import PriceSpan from '../../../components/PriceSpan';
+import { DivFadeIn } from '../../components/DivFadeIn';
+import IntervalRunnerButton from '../../components/IntervalRunnerButton';
+import PriceSpan from '../../components/PriceSpan';
 import { Link, useNavigate } from 'react-router-dom';
-import { toastCartItemRemove } from '../../../lib/notifications/toasts';
+import { toastCartItemRemove } from '../../lib/notifications/toasts';
 import { useState } from 'react';
 
 export const Cart = () => {

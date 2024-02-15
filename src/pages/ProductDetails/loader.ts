@@ -1,5 +1,5 @@
 import type { QueryClient } from '@tanstack/react-query';
-import { productQuerySingle } from '../../../adapters/products';
+import { productQuerySingle } from '../../adapters/products';
 import type { Params } from 'react-router-dom';
 
 export const productDetailsLoader = async (

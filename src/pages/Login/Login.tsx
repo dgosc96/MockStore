@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from '../../../lib/firebase/firebase';
+import { signInWithEmailAndPassword } from '../../lib/firebase/firebase';
 import { useState } from 'react';
-import { toastSingedIn } from '../../../lib/notifications/toasts';
+import { toastSingedIn } from '../../lib/notifications/toasts';
 
 export const Login = () => {
   const [error, setError] = useState<string>('');

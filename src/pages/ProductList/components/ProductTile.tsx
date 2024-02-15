@@ -1,10 +1,10 @@
-import { type TProduct } from '../../../../adapters/products';
+import { type TProduct } from '../../../adapters/products';
 import { Link, useNavigate } from 'react-router-dom';
-import { ROUTER_PATH } from '../../../';
-import { useShoppingCart } from '../../../../context/ShopingCartContext';
+import { ROUTER_PATH } from '../../../navigation';
+import { useShoppingCart } from '../../../context/ShopingCartContext';
 import { HiOutlineHeart } from 'react-icons/hi';
 import { LiaCartPlusSolid } from 'react-icons/lia';
-import { toastCartItemAdd } from '../../../../lib/notifications/toasts';
+import { toastCartItemAdd } from '../../../lib/notifications/toasts';
 
 export const ProductTile = (props: { data: TProduct }) => {
   const detailsLinkPath = `${ROUTER_PATH.PRODUCT_DETAILS}/${props.data.id}`;
