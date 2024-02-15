@@ -55,7 +55,7 @@ export const SearchBar = () => {
     return () => document.removeEventListener('mousedown', handleBlur);
   }, [searchBarRef]);
 
-  /* useEffect(() => setIsFocused(false), [location]); */
+  useEffect(() => setIsFocused(false), [location]);
 
   return (
     <div
