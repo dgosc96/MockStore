@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { CgSearch } from 'react-icons/cg';
 import { Oval as LoadingSpinner } from 'react-loader-spinner';
+import { IoIosArrowForward as ArrowForwardIcon } from 'react-icons/io';
 import {
   Link,
   createSearchParams,
@@ -13,7 +14,7 @@ import { processSearchTerm, searchProducts } from '../../../lib/search/search';
 
 export const SearchBar = () => {
   const [value, setValue] = useState<string>('');
-  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchBarRef = useRef<HTMLDivElement>(null);
 
@@ -54,28 +55,32 @@ export const SearchBar = () => {
     return () => document.removeEventListener('mousedown', handleBlur);
   }, [searchBarRef]);
 
-  useEffect(() => setIsFocused(false), [location]);
+  /* useEffect(() => setIsFocused(false), [location]); */
 
   return (
     <div
       ref={searchBarRef}
-      onMouseDown={handleFocus}
-      className={`relative flex h-10 w-1 max-w-md flex-1 items-center rounded-2xl border-neutral-500 bg-white/50 text-neutral-600 ${isFocused && 'rounded-b-none bg-neutral-100/50 outline outline-2 outline-neutral-400'}`}
+      className='relative max-w-md flex-1 outline-neutral-600'
     >
-      <input
-        type='text'
-        ref={inputRef}
-        placeholder='Search MockStore'
-        onChange={(e) => setValue(e.target.value)}
-        className={`ml-3 h-full w-1 flex-1 bg-transparent outline-none transition-all placeholder:text-neutral-500`}
-      />
-      <button
-        type='button'
-        onClick={handleSearchBtn}
-        className={`h-full w-9 flex-none rounded-r-2xl transition-colors hover:bg-neutral-600/10 ${isFocused && ' rounded-br-none'}`}
+      <div
+        onMouseDown={handleFocus}
+        className={`flex h-10 items-center overflow-hidden rounded-[1.25rem] bg-white/50 text-neutral-600 ${isFocused && 'rounded-b-none outline outline-2 outline-inherit '}`}
       >
-        <CgSearch size='1.5rem' className='ml-1 text-neutral-600  ' />
-      </button>
+        <input
+          type='text'
+          ref={inputRef}
+          placeholder='Search MockStore'
+          onChange={(e) => setValue(e.target.value)}
+          className={`ml-3 h-full w-1 flex-1 bg-transparent outline-none transition-all placeholder:text-neutral-500`}
+        />
+        <button
+          type='button'
+          onClick={handleSearchBtn}
+          className={`h-full w-10 flex-none transition-colors hover:bg-neutral-200`}
+        >
+          <CgSearch size='1.5rem' className='ml-1 text-neutral-600  ' />
+        </button>
+      </div>
       {isFocused && <SearchSuggestions searchTerm={value} />}
     </div>
   );
@@ -92,7 +97,7 @@ const SearchSuggestions = (props: SearchSuggestionsProps) => {
   return (
     <div
       onMouseDown={props.onHover}
-      className='absolute top-10 w-full rounded-b-md bg-neutral-100 px-2 outline outline-2 outline-inherit backdrop-blur-3xl'
+      className='absolute top-10 w-full overflow-hidden rounded-b-[1.25rem] bg-neutral-100 outline outline-2 outline-inherit backdrop-blur-3xl'
     >
       {processedSearchTerm.length === 0 ? (
         <CategorySuggestions />
@@ -107,25 +112,37 @@ const CategorySuggestions = () => {
   const { data: categories, status: categoriesStatus } = useCategories();
 
   return (
-    <ul>
-      {categoriesStatus === 'pending' && (
-        <LoadingSpinner strokeWidth={6} wrapperClass='child:m-auto child:h-8' />
-      )}
+    <ul className='py-1'>
+      <p className='px-2 py-1 text-xs font-medium text-neutral-400'>
+        Categories:
+      </p>
+      {categoriesStatus === 'pending' && <SearchBarLoadingIndicator />}
       {categoriesStatus === 'success' &&
         categories.map((category, index) => (
-          <li key={`category-${index}`}>{category}</li>
+          <li key={`category-${index}`} className='hover:bg-neutral-200'>
+            <Link
+              to={ROUTER_PATH.PRODUCT_LIST}
+              className='line-clamp-1 flex items-center justify-between px-3 py-1 '
+            >
+              {/* Make first letter uppercase */}
+              {category.charAt(0).toUpperCase() + category.slice(1)}
+              <ArrowForwardIcon size={20} className='min-w-fit' />
+            </Link>
+          </li>
         ))}
     </ul>
   );
 };
 
 const ProductSuggestions = (props: { processedSearchTerm: string[] }) => {
+  const initialListLimit = 5;
+  const [listLimit, setListLimit] = useState<number>(initialListLimit);
   const { data: products, status: productsStatus } = useProductList();
 
-  if (productsStatus === 'pending')
-    return (
-      <LoadingSpinner strokeWidth={6} wrapperClass='child:m-auto child:h-8' />
-    );
+  const handleShowMore = () => setListLimit((prev) => prev + 5);
+  const handleShowLess = () => setListLimit((prev) => prev - 5);
+
+  if (productsStatus === 'pending') return <SearchBarLoadingIndicator />;
 
   if (productsStatus === 'error') return <div>Oops! Something went wrong</div>;
 
@@ -133,27 +150,60 @@ const ProductSuggestions = (props: { processedSearchTerm: string[] }) => {
     const searchResult = searchProducts(products, props.processedSearchTerm);
 
     return (
-      <ul>
+      <ul className='py-1'>
         {searchResult.length === 0 ? (
-          <li>No results for given phrase</li>
+          <li className='text-center'>No results</li>
         ) : (
           <>
-            {searchResult.slice(0, 5).map((product) => (
-              <li className='' key={'filteredProduct_' + product.id}>
+            <p className='px-2 py-1 text-xs font-medium text-neutral-400'>
+              Search results:
+            </p>
+            {searchResult.slice(0, listLimit).map((product) => (
+              <li
+                key={'filteredProduct_' + product.id}
+                className='hover:bg-neutral-200'
+              >
                 <Link
-                  className=' my-2 line-clamp-1'
+                  className=' flex items-center justify-between px-3 py-1'
                   to={`${ROUTER_PATH.PRODUCT_DETAILS}/${product.id}`}
                 >
-                  {product.title}
+                  <span className='line-clamp-1'>{product.title}</span>
+                  <ArrowForwardIcon size={20} className='min-w-fit' />
                 </Link>
               </li>
             ))}
-            {searchResult.length > 5 && (
-              <li>{`${searchResult.length - 5} more items...`}</li>
+            {searchResult.length > initialListLimit && (
+              <li className='flex justify-between px-5 py-1 text-sm text-neutral-400 underline-offset-2'>
+                <div>
+                  {listLimit > initialListLimit && (
+                    <button
+                      className='hover:underline'
+                      onClick={handleShowLess}
+                    >{`show less`}</button>
+                  )}
+                </div>
+                {searchResult.length > listLimit && (
+                  <button
+                    className='hover:underline'
+                    onClick={handleShowMore}
+                  >{`show more`}</button>
+                )}
+              </li>
             )}
           </>
         )}
       </ul>
     );
   }
+};
+
+const SearchBarLoadingIndicator = () => {
+  return (
+    <LoadingSpinner
+      strokeWidth={6}
+      color='#a3a3a3'
+      secondaryColor='#a3a3a3'
+      wrapperClass='child:m-auto m-2 child:h-8'
+    />
+  );
 };
