@@ -1,6 +1,6 @@
 import { BsCart2 } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
-import { ROUTER_PATH } from '../../../navigation';
+import { ROUTER_PATH } from '../../../routes';
 import { useShoppingCart } from '../../../context/ShopingCartContext';
 
 export const CartIcon = () => {

@@ -3,7 +3,7 @@ import {
   useShoppingCart,
   type CartItem,
 } from '../../context/ShopingCartContext';
-import { ROUTER_PATH } from '../../navigation';
+import { ROUTER_PATH } from '../../routes';
 import { HiOutlineTrash } from 'react-icons/hi';
 import { FaPlus as PlusIcon, FaMinus as MinusIcon } from 'react-icons/fa6';
 

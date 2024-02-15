@@ -1,6 +1,6 @@
 import { useMediaQuery } from 'react-responsive';
 
-import { ROUTER_PATH } from '../../navigation';
+import { ROUTER_PATH } from '../../routes/index.ts';
 import { SearchBar } from './components/SearchBar.tsx';
 import { BurgerMenu } from './components/BurgerMenu.tsx';
 import { screens as TWScreens } from '../../../generated/tailwind-config-objs.ts';

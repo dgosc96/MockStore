@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './index.css';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider } from 'react-router-dom';
-import { createRouterWithTSQueryClRef } from './navigation/router';
+import { createRouterWithTSQueryClRef } from './routes/router';
 import { ShoppingCartProvider } from './context/ShopingCartContext';
 import { ToasterWrapper } from './lib/notifications/ToasterWrapper';
 import { AuthProvider } from './context/AuthContext';

@@ -8,7 +8,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { useProductList, useCategories } from '../../../adapters/products';
-import { ROUTER_PATH } from '../../../navigation';
+import { ROUTER_PATH } from '../../../routes';
 import { processSearchTerm, searchProducts } from '../../../lib/search/search';
 
 export const SearchBar = () => {

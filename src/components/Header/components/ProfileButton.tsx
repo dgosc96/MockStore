@@ -1,7 +1,7 @@
 import { signOut } from '../../../lib/firebase/firebase';
 import { NavLink } from 'react-router-dom';
 import { useAuthUser } from '../../../context/AuthContext';
-import { ROUTER_PATH } from '../../../navigation';
+import { ROUTER_PATH } from '../../../routes';
 import { DropdownMenu } from '../../DropdownMenu';
 import { toastSingedOut } from '../../../lib/notifications/toasts';
 

@@ -6,7 +6,7 @@ import {
   useRef,
 } from 'react';
 
-import { ROUTER_PATH } from '../../../navigation';
+import { ROUTER_PATH } from '../../../routes/index.ts';
 import { NavLink } from 'react-router-dom';
 import { DivFadeIn } from '../../DivFadeIn.tsx';
 

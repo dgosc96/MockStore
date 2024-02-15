@@ -1,6 +1,6 @@
 import { type TProduct } from '../../../adapters/products';
 import { Link, useNavigate } from 'react-router-dom';
-import { ROUTER_PATH } from '../../../navigation';
+import { ROUTER_PATH } from '../../../routes';
 import { useShoppingCart } from '../../../context/ShopingCartContext';
 import { HiOutlineHeart } from 'react-icons/hi';
 import { LiaCartPlusSolid } from 'react-icons/lia';
