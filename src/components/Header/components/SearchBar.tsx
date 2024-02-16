@@ -60,11 +60,11 @@ export const SearchBar = () => {
   return (
     <div
       ref={searchBarRef}
-      className='relative max-w-md flex-1 outline-neutral-600'
+      className='relative max-w-md flex-1 outline-neutral-400'
     >
       <div
         onMouseDown={handleFocus}
-        className={`flex h-10 items-center overflow-hidden rounded-[1.25rem] bg-white/50 text-neutral-600 ${isFocused && 'rounded-b-none outline outline-2 outline-inherit '}`}
+        className={`flex h-10 items-center overflow-hidden rounded-[1.25rem] bg-white/50 text-neutral-600 ${isFocused && 'rounded-b-none outline outline-1 outline-inherit '}`}
       >
         <input
           type='text'
@@ -97,7 +97,7 @@ const SearchSuggestions = (props: SearchSuggestionsProps) => {
   return (
     <div
       onMouseDown={props.onHover}
-      className='absolute top-10 w-full overflow-hidden rounded-b-[1.25rem] bg-neutral-100 outline outline-2 outline-inherit backdrop-blur-3xl'
+      className='absolute top-10 w-full overflow-hidden rounded-b-[1.25rem] bg-neutral-100 outline outline-1 outline-inherit backdrop-blur-3xl'
     >
       {processedSearchTerm.length === 0 ? (
         <CategorySuggestions />
@@ -156,7 +156,7 @@ const ProductSuggestions = (props: { processedSearchTerm: string[] }) => {
         ) : (
           <>
             <p className='px-2 py-1 text-xs font-medium text-neutral-400'>
-              Search results:
+              {`Search result: (${searchResult.length} item${searchResult.length > 1 ? 's' : ''})`}
             </p>
             {searchResult.slice(0, listLimit).map((product) => (
               <li
