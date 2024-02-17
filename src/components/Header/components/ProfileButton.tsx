@@ -5,7 +5,12 @@ import { ROUTER_PATH } from '../../../routes';
 import { DropdownMenu } from '../../DropdownMenu';
 import { toastSingedOut } from '../../../lib/notifications/toasts';
 
-export const ProfileButton = () => {
+type ProfileButtonProps = {
+  onExpand?: () => void;
+  onCollapse?: () => void;
+};
+
+export const ProfileButton = (props: ProfileButtonProps) => {
   const { user } = useAuthUser();
 
   if (user) {
@@ -14,6 +19,8 @@ export const ProfileButton = () => {
         btnChildren={user.displayName ? user.displayName : user.email}
         btnClassName={`px-3 font-medium rounded-xl transition-colors hover:bg-neutral-100/60 active:bg-transparent `}
         btnClassNameOpen='bg-neutral-100/50'
+        onExpand={props.onExpand}
+        onCollapse={props.onCollapse}
       >
         <NavLink
           className={({ isActive }) =>

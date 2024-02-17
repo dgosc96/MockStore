@@ -6,12 +6,16 @@ type DropdownMenuProps = {
   btnClassName?: string;
   btnClassNameOpen?: string;
   children?: ReactNode;
+  onExpand?: () => void;
+  onCollapse?: () => void;
 };
 export const DropdownMenu = ({
   children,
   btnChildren,
   btnClassName,
   btnClassNameOpen,
+  onExpand,
+  onCollapse,
 }: DropdownMenuProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -31,9 +35,14 @@ export const DropdownMenu = ({
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [popupRef]);
+  }, []);
 
   useEffect(() => setIsOpen(false), [location]);
+
+  useEffect(() => {
+    if (isOpen && onExpand) onExpand();
+    else if (onCollapse) onCollapse();
+  }, [isOpen]);
 
   return (
     <div ref={popupRef} className={`relative `}>

@@ -12,27 +12,33 @@ import { useProductList, useCategories } from '../../../adapters/products';
 import { ROUTER_PATH } from '../../../routes';
 import { processSearchTerm, searchProducts } from '../../../lib/search/search';
 
-export const SearchBar = () => {
+type SearchBarProps = {
+  onExpand?: () => void;
+  onCollapse?: () => void;
+};
+
+export const SearchBar = (props: SearchBarProps) => {
   const [value, setValue] = useState<string>('');
-  const [isFocused, setIsFocused] = useState<boolean>(true);
+  const [isActive, setIsActive] = useState<boolean>(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchBarRef = useRef<HTMLDivElement>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleFocus = () => {
-    setIsFocused(true);
-    inputRef.current?.focus();
+  const expandSearchBar = () => {
+    if (isActive) return;
+    setIsActive(true);
   };
 
-  const handleBlur = (event: MouseEvent) => {
-    if (
-      searchBarRef.current &&
-      !searchBarRef.current.contains(event.target as Node)
-    ) {
-      setIsFocused(false);
-    }
+  const collapseSearchBar = () => {
+    if (!isActive) return;
+    setIsActive(false);
+  };
+
+  const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    expandSearchBar();
   };
 
   const handleSearchBtn = () => {
@@ -50,12 +56,29 @@ export const SearchBar = () => {
     });
   };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleBlur);
-    return () => document.removeEventListener('mousedown', handleBlur);
-  }, [searchBarRef]);
+  const handleCollapseOnClickOutside = (event: MouseEvent) => {
+    if (
+      searchBarRef.current &&
+      !searchBarRef.current.contains(event.target as Node)
+    ) {
+      collapseSearchBar();
+    }
+  };
 
-  useEffect(() => setIsFocused(false), [location]);
+  useEffect(() => {
+    document.addEventListener('mousedown', handleCollapseOnClickOutside);
+    return () =>
+      document.removeEventListener('mousedown', handleCollapseOnClickOutside);
+  }, []);
+
+  useEffect(() => collapseSearchBar(), [location]);
+
+  useEffect(() => {
+    if (isActive) {
+      if (props.onExpand) props.onExpand();
+      inputRef.current?.focus();
+    } else if (props.onCollapse) props.onCollapse();
+  }, [isActive]);
 
   return (
     <div
@@ -63,14 +86,14 @@ export const SearchBar = () => {
       className='relative max-w-md flex-1 outline-neutral-400'
     >
       <div
-        onMouseDown={handleFocus}
-        className={`flex h-10 items-center overflow-hidden rounded-[1.25rem] bg-white/50 text-neutral-600 ${isFocused && 'rounded-b-none outline outline-1 outline-inherit '}`}
+        onClick={expandSearchBar}
+        className={`flex h-10 items-center overflow-hidden rounded-[1.25rem] bg-white/50 text-neutral-600 ${isActive && 'rounded-b-none outline outline-1 outline-inherit '}`}
       >
         <input
           type='text'
           ref={inputRef}
           placeholder='Search MockStore'
-          onChange={(e) => setValue(e.target.value)}
+          onChange={handleInputOnChange}
           className={`ml-3 h-full w-1 flex-1 bg-transparent outline-none transition-all placeholder:text-neutral-500`}
         />
         <button
@@ -81,7 +104,7 @@ export const SearchBar = () => {
           <CgSearch size='1.5rem' className='ml-1 text-neutral-600  ' />
         </button>
       </div>
-      {isFocused && <SearchSuggestions searchTerm={value} />}
+      {isActive && <SearchSuggestions searchTerm={value} />}
     </div>
   );
 };

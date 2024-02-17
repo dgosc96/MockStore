@@ -7,16 +7,18 @@ import {
 } from 'react';
 
 import { ROUTER_PATH } from '../../../routes/index.ts';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { DivFadeIn } from '../../DivFadeIn.tsx';
 
 type BurgerMenuProps = {
   className?: string;
-  onStateChange?: (isActive: boolean) => void;
+  onExpand?: () => void;
+  onCollapse?: () => void;
 };
 
 export const BurgerMenu = (props: PropsWithChildren<BurgerMenuProps>) => {
   const [isActive, setIsActive] = useState(false);
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsActive((current) => !current);
@@ -28,10 +30,11 @@ export const BurgerMenu = (props: PropsWithChildren<BurgerMenuProps>) => {
   };
 
   useEffect(() => {
-    if (props.onStateChange != undefined) {
-      props.onStateChange(isActive);
-    }
+    if (isActive && props.onExpand) props.onExpand();
+    else if (props.onCollapse) props.onCollapse();
   }, [isActive]);
+
+  useEffect(() => collapseSidebar(), [location]);
 
   return (
     <div
@@ -47,18 +50,10 @@ export const BurgerMenu = (props: PropsWithChildren<BurgerMenuProps>) => {
         />
       </button>
       <BurgerSidebar shouldExpand={isActive}>
-        <NavLink onClick={collapseSidebar} to={ROUTER_PATH.HOME}>
-          Home
-        </NavLink>
-        <NavLink onClick={collapseSidebar} to={ROUTER_PATH.PRODUCT_LIST}>
-          Browse
-        </NavLink>
-        <NavLink onClick={collapseSidebar} to={ROUTER_PATH.LOGIN}>
-          Login
-        </NavLink>
-        <NavLink onClick={collapseSidebar} to={ROUTER_PATH.CART}>
-          Your Cart
-        </NavLink>
+        <NavLink to={ROUTER_PATH.HOME}>Home</NavLink>
+        <NavLink to={ROUTER_PATH.PRODUCT_LIST}>Browse</NavLink>
+        <NavLink to={ROUTER_PATH.LOGIN}>Login</NavLink>
+        <NavLink to={ROUTER_PATH.CART}>Your Cart</NavLink>
       </BurgerSidebar>
       {isActive && (
         <DivFadeIn
