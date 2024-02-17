@@ -17,12 +17,23 @@ export const ProductList = () => {
 
   const filterProductsBySearchParams = () => {
     const location = useLocation();
-    const searchParams = new URLSearchParams(location.search).get('search');
 
-    if (searchParams === null) {
-      return products;
-    }
-    return searchProducts(products, processSearchTerm(searchParams));
+    const URLParams = new URLSearchParams(location.search);
+
+    const searchTermParam = URLParams.get('search');
+    const categoryParam = URLParams.get('category');
+
+    let filteredProducts = products;
+    if (searchTermParam)
+      filteredProducts = searchProducts(
+        products,
+        processSearchTerm(searchTermParam),
+      );
+    if (categoryParam)
+      filteredProducts = filteredProducts.filter(
+        (product) => product.category === categoryParam,
+      );
+    return filteredProducts;
   };
   if (error) return 'An error has occurred: ' + error.message;
   return (

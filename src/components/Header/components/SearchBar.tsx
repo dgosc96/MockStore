@@ -134,6 +134,9 @@ const SearchSuggestions = (props: SearchSuggestionsProps) => {
 const CategorySuggestions = () => {
   const { data: categories, status: categoriesStatus } = useCategories();
 
+  const createCategorySearchParam = (categoryName: string) =>
+    `?${createSearchParams({ category: categoryName })}`;
+
   return (
     <ul className='py-1'>
       <p className='px-2 py-1 text-xs font-medium text-neutral-400'>
@@ -141,14 +144,17 @@ const CategorySuggestions = () => {
       </p>
       {categoriesStatus === 'pending' && <SearchBarLoadingIndicator />}
       {categoriesStatus === 'success' &&
-        categories.map((category, index) => (
+        categories.map((categoryName, index) => (
           <li key={`category-${index}`} className='hover:bg-neutral-200'>
             <Link
-              to={ROUTER_PATH.PRODUCT_LIST}
+              to={{
+                pathname: ROUTER_PATH.PRODUCT_LIST,
+                search: createCategorySearchParam(categoryName),
+              }}
               className='line-clamp-1 flex items-center justify-between px-3 py-1 '
             >
               {/* Make first letter uppercase */}
-              {category.charAt(0).toUpperCase() + category.slice(1)}
+              {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
               <ArrowForwardIcon size={20} className='min-w-fit' />
             </Link>
           </li>
