@@ -11,6 +11,7 @@ import {
 import { useProductList, useCategories } from '../../../adapters/products';
 import { ROUTER_PATH } from '../../../routes';
 import { processSearchTerm, searchProducts } from '../../../lib/search/search';
+import capitalizeFirstLetter from '../../../utils/capitalizeFirstLetter';
 
 type SearchBarProps = {
   onExpand?: () => void;
@@ -154,7 +155,7 @@ const CategorySuggestions = () => {
               className='line-clamp-1 flex items-center justify-between px-3 py-1 '
             >
               {/* Make first letter uppercase */}
-              {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
+              {capitalizeFirstLetter(categoryName)}
               <ArrowForwardIcon size={20} className='min-w-fit' />
             </Link>
           </li>
