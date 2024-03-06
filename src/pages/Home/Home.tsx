@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import { DivFadeIn } from '../../components/DivFadeIn';
+import { ROUTER_PATH } from '../../routes';
 
 type Product = {
   id: number;
@@ -21,12 +23,14 @@ const featuredProducts: Product[] = [
 ];
 
 export const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <DivFadeIn className=''>
       {/* Hero Section */}
       <div className='relative flex min-h-[80vh] items-center px-3'>
         <div className='absolute inset-x-0 -top-40 bottom-0 -z-10 bg-hero-image bg-cover bg-left-bottom brightness-75' />
-        <div className='mx-auto max-w-4xl text-center text-white sm:mx-5 sm:text-left'>
+        <div className='mx-auto max-w-4xl text-center text-white sm:mx-12 sm:text-left'>
           <h2 className='text-5xl font-semibold sm:text-6xl md:text-7xl lg:text-8xl '>
             Welcome to MockStore
           </h2>
@@ -34,10 +38,16 @@ export const Home = () => {
             Find the best fake products at unbeatable fake prices.
           </p>
           <div className='my-16 flex justify-center gap-6 font-semibold sm:mx-9 sm:justify-normal'>
-            <button className='rounded-2xl bg-cyan-600 px-5 py-3 transition hover:scale-[1.03]  active:scale-[0.98] active:brightness-95'>
-              Explore
+            <button
+              onClick={() => navigate({ pathname: ROUTER_PATH.PRODUCT_LIST })}
+              className='rounded-2xl bg-cyan-600 px-5 py-3 transition hover:scale-[1.03]  active:scale-[0.98] active:brightness-95'
+            >
+              Shop Now
             </button>
-            <button className='rounded-2xl bg-lime-700 px-5 py-3  transition hover:scale-[1.03] active:scale-[0.98] active:brightness-95'>
+            <button
+              onClick={() => navigate({ pathname: ROUTER_PATH.SIGNUP })}
+              className='rounded-2xl bg-lime-700 px-5 py-3 transition hover:scale-[1.03] active:scale-[0.98] active:brightness-95'
+            >
               Create an account
             </button>
           </div>
